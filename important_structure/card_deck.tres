@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CardDeck" load_steps=2 format=3 uid="uid://eeb4a5e642wx"]
+
+[ext_resource type="Script" path="res://important_structure/card_deck.gd" id="1_yobj5"]
+
+[resource]
+script = ExtResource("1_yobj5")
+card_list = Array[Resource("res://data_structure/card_info.gd")]([])

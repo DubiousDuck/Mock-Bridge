@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://cbdkc6ec83a8t"]
+
+[ext_resource type="Script" path="res://important_structure/card_info.gd" id="1_2kigv"]
+
+[resource]
+script = ExtResource("1_2kigv")
+point = 0
+suits = null
