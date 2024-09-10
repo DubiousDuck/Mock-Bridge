@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bii77pwhb467r"]
 
-[ext_resource type="Script" path="res://card_ui.gd" id="1_bh1ef"]
+[ext_resource type="Script" path="res://ui/card_ui.gd" id="1_ppbdw"]
 
 [node name="CardUI" type="Button"]
 custom_minimum_size = Vector2(176, 280)
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(85, 140)
 toggle_mode = true
-script = ExtResource("1_bh1ef")
+script = ExtResource("1_ppbdw")
 
 [node name="Name" type="VBoxContainer" parent="."]
 layout_mode = 1

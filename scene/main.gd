@@ -1,7 +1,7 @@
 extends Node2D
 
-const CARD_UI = preload("res://card_ui.tscn")
-const PLAYER = preload("res://player.tscn")
+const CARD_UI = preload("res://ui/card_ui.tscn")
+const PLAYER = preload("res://player/player.tscn")
 const STARTING_CARD_N = 4
 const PORT = 9999
 var enet_peer = ENetMultiplayerPeer.new()

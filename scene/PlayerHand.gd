@@ -4,7 +4,7 @@ signal card_chosen(card : Card)
 
 @export var tracking_player : Player
 
-const CARD_UI = preload("res://card_ui.tscn")
+const CARD_UI = preload("res://ui/card_ui.tscn")
 
 func clear_hand():
 	for card in get_children():
