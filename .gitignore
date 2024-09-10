@@ -13,3 +13,19 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Visual Studio-specific ignores
+*.vs
+*.tmp
+
+# Blender-specific ignores
+*blend1
+
+# MacOS
+*.DS_Store
+
+# JetBrains
+**/.idea/**/
+
+# Builds
+build/*

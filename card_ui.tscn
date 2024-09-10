@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://bii77pwhb467r"]
+
+[ext_resource type="Script" path="res://card_ui.gd" id="1_bh1ef"]
+
+[node name="CardUI" type="Button"]
+custom_minimum_size = Vector2(176, 280)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -140.0
+offset_right = 88.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(85, 140)
+toggle_mode = true
+script = ExtResource("1_bh1ef")
+
+[node name="Name" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -30.0
+offset_right = 88.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Points" type="Label" parent="Name"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+
+[node name="Suits" type="Label" parent="Name"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Spades"
+horizontal_alignment = 1

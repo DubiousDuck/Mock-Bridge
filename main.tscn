@@ -1,0 +1,132 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm2xxmsrnfxep"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_4dhrl"]
+[ext_resource type="Script" path="res://PlayerHand.gd" id="2_7apdo"]
+[ext_resource type="PackedScene" uid="uid://chrbw4r388ybm" path="res://player.tscn" id="3_u4t0s"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_d10si"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_4dhrl")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_right = 177.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 30
+text = "Cards remaining in main deck: X"
+
+[node name="CardStack" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -205.0
+offset_right = 95.0
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerHand" type="HBoxContainer" parent="CanvasLayer" node_paths=PackedStringArray("tracking_player")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 286.0
+offset_top = 484.0
+offset_right = -286.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("2_7apdo")
+tracking_player = NodePath("../../LocalPlayer")
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -554.0
+offset_top = 263.0
+offset_right = -382.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Draw"
+
+[node name="Button2" type="Button" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -354.0
+offset_top = 263.0
+offset_right = -182.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Deal"
+
+[node name="MenuCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" type="PanelContainer" parent="MenuCanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 344.0
+offset_top = 219.0
+offset_right = -344.0
+offset_bottom = -219.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuCanvasLayer/MainMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuCanvasLayer/MainMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+
+[node name="HostButton" type="Button" parent="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="AddressEntry" type="LineEdit" parent="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Address to Join"
+alignment = 1
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn")
+spawn_path = NodePath("../PlayerFolder")
+
+[node name="PlayerFolder" type="Node" parent="."]
+
+[node name="LocalPlayer" parent="." instance=ExtResource("3_u4t0s")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_d10si")
+
+[connection signal="card_chosen" from="CanvasLayer/PlayerHand" to="." method="_on_player_hand_card_chosen"]
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MenuCanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
