@@ -6,6 +6,16 @@ signal card_chosen(card : Card)
 
 const CARD_UI = preload("res://ui/card_ui.tscn")
 
+var hand_enabled = false
+
+func _process(delta):
+	if hand_enabled:
+		for control in get_children():
+			control.disabled = false
+	else:
+		for control in get_children():
+			control.disabled = true
+
 func clear_hand():
 	for card in get_children():
 		card.queue_free()
@@ -27,3 +37,6 @@ func card_pressed():
 			tracking_player.remove_card_from_hand(id)
 			emit_signal("card_chosen", card_played)
 			card.queue_free()
+
+func toggle_hand(state : bool):
+	hand_enabled = state

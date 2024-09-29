@@ -32,6 +32,10 @@ func shuffle_deck():
 	card_list.shuffle()
 	emit_changed()
 
+func clear_deck():
+	card_list.clear()
+	emit_changed()
+
 #Getters
 
 func get_deck_length() -> int:

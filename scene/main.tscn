@@ -17,6 +17,31 @@ offset_bottom = 56.0
 theme_override_font_sizes/font_size = 30
 text = "Cards remaining in main deck: X"
 
+[node name="Label2" type="Label" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -465.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "Player X's Turn"
+horizontal_alignment = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -465.0
+offset_top = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "You are Player X"
+horizontal_alignment = 2
+
 [node name="CardStack" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 8
@@ -56,7 +81,7 @@ offset_right = -382.0
 offset_bottom = 304.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Draw"
+text = "Clear Board"
 
 [node name="Button2" type="Button" parent="CanvasLayer"]
 anchors_preset = 8

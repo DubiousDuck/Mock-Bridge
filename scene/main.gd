@@ -1,8 +1,12 @@
 extends Node2D
 
+signal card_played
+signal turn_continue
+
 const CARD_UI = preload("res://ui/card_ui.tscn")
 const PLAYER = preload("res://player/player.tscn")
 const STARTING_CARD_N = 4
+const MAX_PLAYER_N = 2
 const PORT = 9999
 var enet_peer = ENetMultiplayerPeer.new()
 
@@ -14,6 +18,8 @@ var enet_peer = ENetMultiplayerPeer.new()
 var MAIN_DECK : CardDeck = CardDeck.new([], "Main Deck")
 var DECK_ON_BOARD : CardDeck = CardDeck.new([], "Deck on Board")
 var players = {} #ID for each player
+var id_array = []
+var player_turn = 0
 
 func _ready():
 	prepare_deck()
@@ -28,12 +34,15 @@ func _on_host_button_pressed():
 	multiplayer.peer_connected.connect(add_player)
 	
 	add_player(multiplayer.get_unique_id())
+	$CanvasLayer/Label3.text = "You are Player " + str(multiplayer.get_unique_id())
+	turn_loop()
 
 func _on_join_button_pressed():
 	main_menu.hide()
 	
 	enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer
+	$CanvasLayer/Label3.text = "You are Player " + str(multiplayer.get_unique_id())
 	
 	
 func add_player(peer_id):
@@ -41,6 +50,7 @@ func add_player(peer_id):
 	player.name = str(peer_id)
 	player.player_id = peer_id
 	players[peer_id] = player
+	id_array.push_back(peer_id) #Potential problem?
 	$PlayerFolder.add_child(player)
 	
 	update_player_list.rpc_id(peer_id, players)
@@ -115,21 +125,23 @@ func add_card_to_board(code : Dictionary):
 func request_add_card_to_board(card : Card):
 	pass #maybe this will be useful later
 
+@rpc("any_peer", "call_local")
+func clear_deck_on_board():
+	DECK_ON_BOARD.clear_deck()
+	for item in $CanvasLayer/CardStack.get_children():
+		item.queue_free()
+
 func _on_player_hand_card_chosen(card : Card):
 	var dict : Dictionary = Decoder.get_dict_from_card(card)
 	add_card_to_board.rpc(dict)
 	update_hand_to_server.rpc_id(1, Decoder.encode_deck(local_player.get_current_hand()))
+	emit_signal("card_played")
 
 func _on_button_2_pressed():
 	request_deal_cards_to_player.rpc_id(1, 4)
 	
 func _on_button_pressed():
-	var top_card : Card = MAIN_DECK.draw_top_card()
-	if top_card != null:
-		print(top_card.name + " has been drawn")
-		add_card_to_board(Decoder.get_dict_from_card(top_card))
-	else:
-		print("There are no more cards.")
+	clear_deck_on_board.rpc()
 
 @rpc("any_peer")
 func sync_main_deck(deck_code : Array):
@@ -144,7 +156,37 @@ func _on_main_deck_changed():
 #Record and display cards drawn/played v
 #Receiving cards and playing cards v
 #Multiple player set up v
-## Draw from main deck
+## Draw from main deck v
 ## each player shld only see their own hand v
 #Equally split all cards to four hands
 #Turn loops
+
+func turn_loop():
+	#get current player ID
+	var target_id = id_array[player_turn]
+	toggle_hand.rpc(false, target_id)
+	#get card from player
+	my_turn.rpc_id(target_id)
+	await turn_continue #wacky logic but works so far
+	#check if legal play
+	#update board
+	#update round winner
+	#increase turn number
+	player_turn = (player_turn + 1)%MAX_PLAYER_N
+	print(player_turn)
+	turn_loop()
+
+@rpc("authority", "call_local")
+func toggle_hand(state : bool, current_id : int):
+	player_hand.toggle_hand(state)
+	$CanvasLayer/Label2.text = "Player " + str(current_id) + "'s Turn"
+
+@rpc("authority", "call_local")
+func my_turn():
+	player_hand.toggle_hand(true)
+	await card_played
+	continue_turn.rpc_id(1)
+
+@rpc("any_peer", "call_local")
+func continue_turn():
+	emit_signal("turn_continue")
